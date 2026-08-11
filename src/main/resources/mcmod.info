@@ -1,0 +1,16 @@
+[
+  {
+    "modid": "pistonorderoverlay",
+    "name": "PistonOrderOverlay",
+    "description": "Client-side mod to display piston push order and block movement.",
+    "version": "1.0.0",
+    "mcversion": "1.12.2",
+    "url": "",
+    "updateUrl": "",
+    "authorList": ["RedBlaze908"],
+    "credits": "Inspired by Pistorder by Fallen-Breath",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]
