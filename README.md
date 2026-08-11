@@ -2,6 +2,7 @@
 
 A client-side Minecraft Forge 1.12.2 mod that displays piston push order, block movements, and status overlays in real-time.
 
+![Preview](https://github.com/RedBlaze908/PistonOrderOverlay/blob/main/screenshot/pistorder.png)
 ---
 
 ## 🌟 Features
