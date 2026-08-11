@@ -14,7 +14,7 @@ import java.util.Collections;
 public class PistorderMod {
     public static final String MODID = "pistonorderoverlay";
     public static final String NAME = "PistonOrderOverlay";
-    public static final String VERSION = "1.0.0";
+    public static final String VERSION = "1.0.1";
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
