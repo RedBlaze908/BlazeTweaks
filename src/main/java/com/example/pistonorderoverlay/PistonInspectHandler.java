@@ -15,7 +15,6 @@ public class PistonInspectHandler {
 
     @SubscribeEvent
     public void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
-        // If the mod is disabled with the button, we ignore the event entirely
         if (!KeyInputHandler.isEnabled()) {
             return;
         }
@@ -48,25 +47,18 @@ public class PistonInspectHandler {
 
         event.setCanceled(true);
 
-        BlockPistonBase piston = (BlockPistonBase) state.getBlock();
         EnumFacing facing = state.getValue(BlockPistonBase.FACING);
         boolean extended = state.getValue(BlockPistonBase.EXTENDED);
+        boolean isSticky = state.getBlock() == Blocks.STICKY_PISTON;
 
-        boolean sticky = state.getBlock() == Blocks.STICKY_PISTON;
-
-        if (extended && !sticky) {
-            PistonOverlayManager.toggleUnsupported(player, pos, facing);
-            return;
-        }
-
-        boolean extending = !extended;
+        // PistonOverlayManager.toggleUnsupported(player, pos, facing);
 
         PistonOverlayManager.toggle(
                 player,
                 world,
                 pos,
                 facing,
-                extending,
-                sticky);
+                extended,
+                isSticky);
     }
 }

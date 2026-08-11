@@ -1,12 +1,13 @@
 package com.example.pistonorderoverlay;
 
-import net.minecraft.block.state.PistonHelperAccessor; // IMPORT FONDAMENTALE
+import net.minecraft.block.BlockPistonBase;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.PistonHelperAccessor;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,10 +17,6 @@ import java.util.Map;
 
 /**
  * Status of the piston overlay.
- *
- * This class does not render directly: it only preserves
- * the results of the analysis, which are then drawn by
- * PistonOverlayRenderer.
  */
 public final class PistonOverlayManager {
     private static final Map<BlockPos, OverlayData> OVERLAYS = new HashMap<>();
@@ -31,11 +28,11 @@ public final class PistonOverlayManager {
      * Show/hide the overlay relating to the clicked piston.
      */
     public static void toggle(
-            net.minecraft.entity.player.EntityPlayer player,
+            EntityPlayer player,
             World world,
             BlockPos pistonPos,
             EnumFacing facing,
-            boolean extending,
+            boolean extended,
             boolean sticky) {
         BlockPos key = pistonPos.toImmutable();
 
@@ -44,16 +41,61 @@ public final class PistonOverlayManager {
             return;
         }
 
-        PistonHelperAccessor helper = new PistonHelperAccessor(world, pistonPos, facing, extending);
-
-        boolean canMove = helper.canMove();
-
+        boolean canMove = false;
         List<BlockPos> blocksToMove = new ArrayList<>();
         List<BlockPos> blocksToDestroy = new ArrayList<>();
 
-        if (canMove) {
-            blocksToMove.addAll(helper.getBlocksToMove());
-            blocksToDestroy.addAll(helper.getBlocksToDestroy());
+        if (!extended) {
+            PistonHelperAccessor helper = new PistonHelperAccessor(world, pistonPos, facing, true);
+            canMove = helper.canMove();
+            if (canMove) {
+                blocksToMove.addAll(helper.getBlocksToMove());
+                blocksToDestroy.addAll(helper.getBlocksToDestroy());
+            }
+
+            if (blocksToMove.isEmpty() && blocksToDestroy.isEmpty()) {
+                canMove = false;
+            }
+        } else if (sticky) {
+            BlockPos headPos = pistonPos.offset(facing);
+            BlockPos startPos = headPos.offset(facing);
+
+            if (world.isAirBlock(startPos)) {
+                canMove = true;
+            } else {
+                java.util.Queue<BlockPos> queue = new java.util.LinkedList<>();
+                java.util.Set<BlockPos> visited = new java.util.HashSet<>();
+
+                queue.add(startPos);
+                visited.add(startPos);
+                visited.add(headPos);
+
+                boolean blocked = false;
+
+                while (!queue.isEmpty() && visited.size() <= 12) {
+                    BlockPos current = queue.poll();
+                    IBlockState state = world.getBlockState(current);
+
+                    if (state.getMobilityFlag() == net.minecraft.block.material.EnumPushReaction.BLOCK) {
+                        blocked = true;
+                        break;
+                    }
+
+                    blocksToMove.add(current);
+
+                    if (state.getBlock() == Blocks.SLIME_BLOCK) {
+                        for (EnumFacing dir : EnumFacing.values()) {
+                            BlockPos neighbor = current.offset(dir);
+                            if (!visited.contains(neighbor) && !world.isAirBlock(neighbor)) {
+                                visited.add(neighbor);
+                                queue.add(neighbor);
+                            }
+                        }
+                    }
+                }
+
+                canMove = !blocked && blocksToMove.size() <= 12;
+            }
         }
 
         OVERLAYS.put(
@@ -62,7 +104,7 @@ public final class PistonOverlayManager {
                         world,
                         pistonPos,
                         facing,
-                        extending,
+                        !extended,
                         sticky,
                         canMove,
                         blocksToMove,
@@ -71,10 +113,9 @@ public final class PistonOverlayManager {
 
     /**
      * Overlay used for an already extended regular piston.
-     * A retract is not simulated because the normal piston is not sticky.
      */
     public static void toggleUnsupported(
-            net.minecraft.entity.player.EntityPlayer player,
+            EntityPlayer player,
             BlockPos pistonPos,
             EnumFacing facing) {
         BlockPos key = pistonPos.toImmutable();
@@ -105,10 +146,6 @@ public final class PistonOverlayManager {
         OVERLAYS.clear();
     }
 
-    /**
-     * Removes overlays that belong to another world.
-     * Useful when changing dimensions/world.
-     */
     public static void cleanup(World currentWorld) {
         List<BlockPos> toRemove = new ArrayList<>();
 
