@@ -8,8 +8,8 @@
       "mainClass": "net.minecraftforge.legacydev.MainClient",
       "projectName": "pistorder-forge",
       "cwd": "${workspaceFolder}\\run",
-      "vmArgs": "-Dforge.logging.console.level\u003ddebug -Dforge.logging.markers\u003dSCAN,REGISTRIES,REGISTRYDUMP",
-      "args": "",
+      "vmArgs": "-Dforge.logging.console.level\u003ddebug -Dmixin.config\u003dmixins.blazetweaks.json -Dforge.logging.markers\u003dSCAN,REGISTRIES,REGISTRYDUMP",
+      "args": "--tweakClass org.spongepowered.asm.launch.MixinTweaker",
       "env": {
         "MCP_TO_SRG": "C:\\Users\\Utente\\Desktop\\pistorder-forge\\build\\createSrgToMcp\\output.srg",
         "MOD_CLASSES": "${workspaceFolder}\\bin\\main;${workspaceFolder}\\bin\\main",
@@ -31,8 +31,8 @@
       "mainClass": "net.minecraftforge.legacydev.MainServer",
       "projectName": "pistorder-forge",
       "cwd": "${workspaceFolder}\\run",
-      "vmArgs": "-Dforge.logging.console.level\u003ddebug -Dforge.logging.markers\u003dSCAN,REGISTRIES,REGISTRYDUMP",
-      "args": "",
+      "vmArgs": "-Dforge.logging.console.level\u003ddebug -Dmixin.config\u003dmixins.blazetweaks.json -Dforge.logging.markers\u003dSCAN,REGISTRIES,REGISTRYDUMP",
+      "args": "--tweakClass org.spongepowered.asm.launch.MixinTweaker",
       "env": {
         "MCP_TO_SRG": "C:\\Users\\Utente\\Desktop\\pistorder-forge\\build\\createSrgToMcp\\output.srg",
         "MOD_CLASSES": "${workspaceFolder}\\bin\\main;${workspaceFolder}\\bin\\main",

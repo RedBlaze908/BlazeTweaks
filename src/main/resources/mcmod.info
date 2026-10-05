@@ -1,7 +1,7 @@
 [
   {
-    "modid": "pistonorderoverlay",
-    "name": "PistonOrderOverlay",
+    "modid": "blazetweaks",
+    "name": "BlazeTweaks",
     "description": "Client-side mod to display piston push order and block movement.",
     "version": "1.0.0",
     "mcversion": "1.12.2",

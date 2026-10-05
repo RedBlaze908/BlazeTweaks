@@ -1,4 +1,4 @@
-package com.example.pistonorderoverlay;
+package com.redblaze908.blazetweaks;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
@@ -9,17 +9,26 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import org.lwjgl.input.Keyboard;
 
+import com.redblaze908.blazetweaks.gui.BlazeGuiScreen;
+
 public class KeyInputHandler {
 
+    public static KeyBinding openGuiKey = new KeyBinding(
+            "Open Gui",
+            Keyboard.KEY_RMENU,
+            "BlazeTweaks");
+
+    // Piston overlay key
     public static final KeyBinding TOGGLE_KEY = new KeyBinding(
             "Toggle Pistorder Overlay",
             Keyboard.KEY_O,
-            "PistonOrderOverlay");
+            "BlazeTweaks");
 
     private static boolean enabled = true;
 
     public static void init() {
         ClientRegistry.registerKeyBinding(TOGGLE_KEY);
+        ClientRegistry.registerKeyBinding(openGuiKey);
     }
 
     public static boolean isEnabled() {
@@ -46,6 +55,9 @@ public class KeyInputHandler {
                                 TextFormatting.GOLD + "[PistonOrderOverlay] " + TextFormatting.WHITE + "Mod "
                                         + status));
             }
+        } else if (openGuiKey.isPressed()) {
+            Minecraft.getMinecraft().displayGuiScreen(new BlazeGuiScreen());
         }
     }
+
 }
