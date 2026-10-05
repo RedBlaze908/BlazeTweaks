@@ -36,3 +36,6 @@ To compile the mod yourself, clone the repository and run:
 
 ```cmd
 gradlew.bat build
+
+```
+![Preview](https://github-repo-readme-stats.vercel.app/api?username=RedBlaze908&repo=PistonOrderOverlay&theme=dark)
