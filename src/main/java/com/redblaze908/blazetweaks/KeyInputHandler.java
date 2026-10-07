@@ -24,11 +24,23 @@ public class KeyInputHandler {
             Keyboard.KEY_O,
             "BlazeTweaks");
 
+    public static final KeyBinding toggleEntityTicking = new KeyBinding(
+            "Toggle Entity Ticking",
+            Keyboard.KEY_NONE,
+            "BlazeTweaks");
+
+    public static final KeyBinding toggleFallingBlockKey = new KeyBinding(
+            "Toggle Falling Block Ticking",
+            Keyboard.KEY_BACKSLASH,
+            "BlazeTweaks");
+
     private static boolean enabled = true;
 
     public static void init() {
         ClientRegistry.registerKeyBinding(TOGGLE_KEY);
         ClientRegistry.registerKeyBinding(openGuiKey);
+        ClientRegistry.registerKeyBinding(toggleEntityTicking);
+        ClientRegistry.registerKeyBinding(toggleFallingBlockKey);
     }
 
     public static boolean isEnabled() {
@@ -37,6 +49,7 @@ public class KeyInputHandler {
 
     @SubscribeEvent
     public void onKeyInput(InputEvent.KeyInputEvent event) {
+        // piston overlay
         if (TOGGLE_KEY.isPressed()) {
             enabled = !enabled;
 
@@ -55,8 +68,33 @@ public class KeyInputHandler {
                                 TextFormatting.GOLD + "[PistonOrderOverlay] " + TextFormatting.WHITE + "Mod "
                                         + status));
             }
+
+            // custom gui
         } else if (openGuiKey.isPressed()) {
             Minecraft.getMinecraft().displayGuiScreen(new BlazeGuiScreen());
+
+            // entity ticking
+        } else if (toggleEntityTicking.isPressed()) {
+            if (Minecraft.getMinecraft().isSingleplayer()) {
+                BlazeTweaks.isEntityTickingDisabled = !BlazeTweaks.isEntityTickingDisabled;
+
+                if (Minecraft.getMinecraft().player != null) {
+                    String status = BlazeTweaks.isEntityTickingDisabled
+                            ? TextFormatting.GREEN + "Disabled (Frozen)"
+                            : TextFormatting.RED + "Enabled (Normal)";
+                    Minecraft.getMinecraft().player
+                            .sendStatusMessage(new TextComponentString("Entity Ticking: " + status), true);
+                }
+            }
+        } else if (toggleFallingBlockKey.isPressed() && Minecraft.getMinecraft().isSingleplayer()) {
+            BlazeTweaks.isFallingBlockTickingDisabled = !BlazeTweaks.isFallingBlockTickingDisabled;
+            if (Minecraft.getMinecraft().player != null) {
+                String status = BlazeTweaks.isFallingBlockTickingDisabled
+                        ? TextFormatting.GREEN + "Disabled (Falling Block Frozen)"
+                        : TextFormatting.RED + "Enabled (Normal)";
+                Minecraft.getMinecraft().player
+                        .sendStatusMessage(new TextComponentString("Falling Block Ticking: " + status), true);
+            }
         }
     }
 

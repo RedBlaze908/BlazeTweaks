@@ -8,6 +8,8 @@ import com.redblaze908.blazetweaks.commands.CommandLightningFinder;
 import com.redblaze908.blazetweaks.commands.CommandRNG;
 import com.redblaze908.blazetweaks.commands.CommandRNGWeather;
 import com.redblaze908.blazetweaks.events.ChunkGeneratorTracker;
+import com.redblaze908.blazetweaks.events.EntityTickingHandler;
+import com.redblaze908.blazetweaks.gui.FallingBlockHudOverlay;
 import com.redblaze908.blazetweaks.modules.containers.ShulkerTooltipHandler;
 
 import net.minecraftforge.client.ClientCommandHandler;
@@ -25,9 +27,13 @@ import java.util.Collections;
 public class BlazeTweaks {
     public static final String MODID = "blazetweaks";
     public static final String NAME = "BlazeTweaks";
-    public static final String VERSION = "1.0.0";
+    public static final String VERSION = "1.1.1";
 
+    // flags
     public static boolean isDungeonOverlayEnabled = false;
+    public static boolean isEntityTickingDisabled = false;
+    public static boolean isFallingBlockTickingDisabled = false;
+    public static boolean isFallingBlockDebugEnabled = false;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
@@ -38,7 +44,7 @@ public class BlazeTweaks {
         meta.version = VERSION;
         meta.description = "A client-side technical utility toolkit for Minecraft 1.12.2.";
         meta.authorList = Collections.singletonList("RedBlaze908");
-        meta.credits = "Inspired by Fallen-Breath and Earthcomputer";
+        meta.credits = "";
     }
 
     @EventHandler
@@ -69,6 +75,10 @@ public class BlazeTweaks {
         MinecraftForge.TERRAIN_GEN_BUS.register(tracker);
         MinecraftForge.EVENT_BUS.register(tracker);
         MinecraftForge.EVENT_BUS.register(new DungeonBoundingBoxRenderer());
+
+        // Entity Ticking
+        MinecraftForge.EVENT_BUS.register(new EntityTickingHandler());
+        MinecraftForge.EVENT_BUS.register(new FallingBlockHudOverlay());
 
         if (FMLCommonHandler.instance().getSide().isClient()) {
             KeyInputHandler.init();
