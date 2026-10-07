@@ -7,6 +7,7 @@ import com.redblaze908.blazetweaks.commands.CommandBackup;
 import com.redblaze908.blazetweaks.commands.CommandLightningFinder;
 import com.redblaze908.blazetweaks.commands.CommandRNG;
 import com.redblaze908.blazetweaks.commands.CommandRNGWeather;
+import com.redblaze908.blazetweaks.commands.CommandTick;
 import com.redblaze908.blazetweaks.events.ChunkGeneratorTracker;
 import com.redblaze908.blazetweaks.events.EntityTickingHandler;
 import com.redblaze908.blazetweaks.gui.FallingBlockHudOverlay;
@@ -54,6 +55,7 @@ public class BlazeTweaks {
         ClientCommandHandler.instance.registerCommand(new CommandRNG());
         ClientCommandHandler.instance.registerCommand(new CommandRNGWeather());
         ClientCommandHandler.instance.registerCommand(new CommandLightningFinder()); // useless
+        ClientCommandHandler.instance.registerCommand(new CommandTick());
 
         // Backup System
         ClientCommandHandler.instance.registerCommand(new CommandBackup());
