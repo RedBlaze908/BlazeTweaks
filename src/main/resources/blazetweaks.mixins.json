@@ -1,18 +1,15 @@
 {
   "required": true,
-  "minVersion": "0.8",
+  "minVersion": "0.7.11",
   "package": "com.redblaze908.blazetweaks.mixin",
   "refmap": "blazetweaks.refmap.json",
   "compatibilityLevel": "JAVA_8",
-
   "mixins": [
     "MixinMinecraftServer"
   ],
-
   "client": [
     "MixinEntityTNTPrimed",
     "MixinEntityFallingBlock"
   ],
-
   "server": []
 }

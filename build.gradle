@@ -16,14 +16,16 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'org.spongepowered.mixin'
 
-version = '1.0.1'
+version = '1.1.1'
 group = 'com.redblaze908.blazetweaks'
 archivesBaseName = 'blazetweaks'
 
-sourceCompatibility = targetCompatibility = '1.8'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
+
     maven {
         name = "spongepowered"
         url = "https://repo.spongepowered.org/repository/maven-public/"
@@ -37,32 +39,41 @@ minecraft {
         client {
             workingDirectory project.file('run')
 
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-            property 'forge.logging.console.level', 'debug'
+            property 'forge.logging.markers',
+                    'SCAN,REGISTRIES,REGISTRYDUMP'
 
-            property 'mixin.config', 'blazetweaks.mixins.json'
+            property 'forge.logging.console.level',
+                    'debug'
 
-            args '-tweakClass', 'org.spongepowered.asm.launch.MixinTweaker'
-            args '--mixin.config', 'blazetweaks.mixins.json'
+            args '-tweakClass',
+                    'org.spongepowered.asm.launch.MixinTweaker'
+
+            args '--mixin.config',
+                    'blazetweaks.mixins.json'
         }
 
         server {
             workingDirectory project.file('run')
 
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-            property 'forge.logging.console.level', 'debug'
+            property 'forge.logging.markers',
+                    'SCAN,REGISTRIES,REGISTRYDUMP'
 
-            property 'mixin.config', 'blazetweaks.mixins.json'
+            property 'forge.logging.console.level',
+                    'debug'
 
-            args '-tweakClass', 'org.spongepowered.asm.launch.MixinTweaker'
-            args '--mixin.config', 'blazetweaks.mixins.json'
+            args '-tweakClass',
+                    'org.spongepowered.asm.launch.MixinTweaker'
+
+            args '--mixin.config',
+                    'blazetweaks.mixins.json'
         }
     }
 }
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2859'
-    implementation("org.spongepowered:mixin:0.8.3") {
+
+    compileOnly("org.spongepowered:mixin:0.8.3") {
         exclude module: "guava"
         exclude module: "commons-io"
         exclude module: "gson"
@@ -76,10 +87,17 @@ mixin {
 jar {
     manifest {
         attributes(
-            'FMLCorePlugin': 'com.redblaze908.blazetweaks.BlazeCoreMod',
-            'FMLCorePluginContainsFMLMod': 'true',
-            'ForceLoadAsMod': 'true',
-            'MixinConfigs': 'blazetweaks.mixins.json'
+            'FMLCorePlugin':
+                'com.redblaze908.blazetweaks.BlazeCoreMod',
+
+            'FMLCorePluginContainsFMLMod':
+                'true',
+
+            'ForceLoadAsMod':
+                'true',
+
+            'MixinConfigs':
+                'blazetweaks.mixins.json'
         )
     }
 }

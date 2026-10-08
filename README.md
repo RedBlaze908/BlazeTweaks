@@ -3,7 +3,9 @@
 A client-side Minecraft Forge 1.12.2 mod that adds several useful features for technical Minecraft players.<br>
 The mod was created primarily to add features that I found useful in the game, but it’s now available to everyone!
 
-![Preview](https://github.com/RedBlaze908/PistonOrderOverlay/blob/main/screenshot/pistorder.png)
+![Downloads](https://img.shields.io/github/downloads/RedBlaze908/BlazeTweaks/total?style=for-the-badge&label=Downloads)
+
+![Preview](https://github.com/RedBlaze908/BlazeTweaks/blob/src/resources/assets/blazetweaks/texture/logo.png)
 ---
 
 ## 🌟 Features
@@ -19,6 +21,10 @@ The mod was created primarily to add features that I found useful in the game, b
 - **RNG Lightning Finder:** It find only where the next lightining it's going to stike, it doesn't find the region where there is the RNG. `/lightningfinder <count> [radius] [centerChunkX centerChunkZ]`
 - **Shulkerbox Tooltip:** It make a small tooltip on the shulker item where it tells you the amount of redstone signal that it gives to the comparator and how much, in percentage, are fill.
 - **Dungeon Bounding Box:** It shows you where you can find spawner that are not been generated normally by the game. You can find it in the options menu by pressing **`RMENU`**
+- **Falling Block Info:** It's possible to see more info about the falling blocks. You can find it in the options menu by pressing **`RMENU`**
+- **Falling Block Entity Ticking Toggle:** You can deactivate entity ticking only for falling blocks. (Default: **`BACKSLASH`**).
+- **Entity Ticking Toggle:** This deactivate all the entity ticking in the world. (Default: **`NONE`**, you can find it in the **`RMENU`**).
+- **Ticks Freeze**: You can freeze the ticks with `/ticks freeze`, unfreeze with `/ticks freeze`, and go forward with `/ticks step (n)`. This type of freeze, can stop even tnt and falling blocks, in this way you can visualize them better.
 - **Client-Side Only:** Works entirely on the client, making it safe for multiplayer servers.
 
 ---
@@ -26,6 +32,8 @@ The mod was created primarily to add features that I found useful in the game, b
 ## 🎮 How to Use
 
 I made a full video on how to use this mod! Check my youtube channel: RedBlaze908
+
+This mod require: **mixinbooter** version: 11.17
 
 ---
 
@@ -47,4 +55,4 @@ gradlew.bat clean build
 
 gradlew.bat runClient
 ```
-![Preview](https://github-repo-readme-stats.vercel.app/api?username=RedBlaze908&repo=PistonOrderOverlay&theme=dark)
+![Preview](https://github-repo-readme-stats.vercel.app/api?username=RedBlaze908&repo=BlazeTweaks&theme=dark)

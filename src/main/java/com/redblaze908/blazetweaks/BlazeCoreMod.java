@@ -1,7 +1,6 @@
 package com.redblaze908.blazetweaks;
 
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
-import org.spongepowered.asm.launch.MixinBootstrap;
 import org.spongepowered.asm.mixin.Mixins;
 
 import javax.annotation.Nullable;
@@ -13,11 +12,6 @@ public class BlazeCoreMod implements IFMLLoadingPlugin {
 
     public BlazeCoreMod() {
         System.out.println("[BlazeTweaks] COREMOD LOADED");
-
-        MixinBootstrap.init();
-        Mixins.addConfiguration("blazetweaks.mixins.json");
-
-        System.out.println("[BlazeTweaks] Mixin configuration added");
     }
 
     @Override
@@ -38,6 +32,19 @@ public class BlazeCoreMod implements IFMLLoadingPlugin {
 
     @Override
     public void injectData(Map<String, Object> data) {
+        System.out.println("[BlazeTweaks] injectData()");
+
+        Object location = data.get("coremodLocation");
+
+        if (location != null) {
+            System.out.println("[BlazeTweaks] coremodLocation = " + location);
+        }
+
+        System.out.println("[BlazeTweaks] Registering Mixin config...");
+
+        Mixins.addConfiguration("blazetweaks.mixins.json");
+
+        System.out.println("[BlazeTweaks] Mixin config registered!");
     }
 
     @Override
