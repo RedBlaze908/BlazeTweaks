@@ -5,7 +5,7 @@ The mod was created primarily to add features that I found useful in the game, b
 
 ![Downloads](https://img.shields.io/github/downloads/RedBlaze908/BlazeTweaks/total?style=for-the-badge&label=Downloads)
 
-![Preview](https://github.com/RedBlaze908/BlazeTweaks/blob/src/resources/assets/blazetweaks/texture/logo.png)
+![Preview](https://github.com/RedBlaze908/BlazeTweaks/blob/main/src/main/resources/assets/blazetweaks/texture/logo.png)
 ---
 
 ## 🌟 Features
