@@ -8,11 +8,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-/**
- * Single redirect for both logical sides. WorldServer's target method is inherited
- * from World in this environment, so separate client/server redirects conflict.
- * Keep World bookkeeping intact and suppress only entity simulation in lazy chunks.
- */
 @Mixin(World.class)
 public abstract class MixinWorldLazyChunkClient {
     @Redirect(

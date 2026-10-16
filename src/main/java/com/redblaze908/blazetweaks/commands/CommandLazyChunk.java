@@ -30,11 +30,11 @@ public class CommandLazyChunk extends CommandBase {
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         if (server.isDedicatedServer()) {
-            sender.sendMessage(new TextComponentString(TextFormatting.RED + "/lazychunk è disponibile solo in singleplayer."));
+            sender.sendMessage(new TextComponentString(TextFormatting.RED + "/lazychunk It is only available in singleplayer."));
             return;
         }
         if (!(sender.getCommandSenderEntity() instanceof net.minecraft.entity.player.EntityPlayer)) {
-            sender.sendMessage(new TextComponentString(TextFormatting.RED + "Devi essere un giocatore per usare questo comando."));
+            sender.sendMessage(new TextComponentString(TextFormatting.RED + "You must be a player to use this command."));
             return;
         }
 
@@ -49,23 +49,23 @@ public class CommandLazyChunk extends CommandBase {
         String action = args[0].toLowerCase(Locale.ROOT);
         if (action.equals("list") && args.length == 1) {
             int count = 0;
-            sender.sendMessage(new TextComponentString(TextFormatting.AQUA + "Chunk lazy (dimensione " + dimension + "):"));
+            sender.sendMessage(new TextComponentString(TextFormatting.AQUA + "Chunk lazy (dimension " + dimension + "):"));
             for (LazyChunkManager.ChunkKey key : LazyChunkManager.getLazyChunks()) {
                 if (key.dimension == dimension) {
                     sender.sendMessage(new TextComponentString(TextFormatting.GRAY + "- " + key.x + "," + key.z));
                     count++;
                 }
             }
-            if (count == 0) sender.sendMessage(new TextComponentString(TextFormatting.YELLOW + "Nessun chunk lazy in questa dimensione."));
+            if (count == 0) sender.sendMessage(new TextComponentString(TextFormatting.YELLOW + "No lazy chunks in this dimension."));
             return;
         }
         if (action.equals("auto") && args.length == 2) {
             if (args[1].equalsIgnoreCase("on")) {
                 LazyChunkManager.setAutoRestoreEnabled(true);
-                sender.sendMessage(new TextComponentString(TextFormatting.GREEN + "Ripristino automatico attivo: i chunk lazy verranno normalizzati quando escono dalla render distance."));
+                sender.sendMessage(new TextComponentString(TextFormatting.GREEN + "Automatic recovery enabled: Lazy chunks will be normalized when they go out of render distance."));
             } else if (args[1].equalsIgnoreCase("off")) {
                 LazyChunkManager.setAutoRestoreEnabled(false);
-                sender.sendMessage(new TextComponentString(TextFormatting.YELLOW + "Ripristino automatico disattivato."));
+                sender.sendMessage(new TextComponentString(TextFormatting.YELLOW + "Automatic recovery disabled."));
             } else {
                 usage(sender);
             }
@@ -92,7 +92,7 @@ public class CommandLazyChunk extends CommandBase {
         try {
             return Integer.parseInt(value);
         } catch (NumberFormatException ex) {
-            throw new CommandException("Coordinate chunk non valida: " + value);
+            throw new CommandException("Invalid chunk coordinates: " + value);
         }
     }
 
@@ -100,16 +100,16 @@ public class CommandLazyChunk extends CommandBase {
         WorldServer world = server.getWorld(dimension);
         if (lazy && (world == null || world.getChunkProvider().getLoadedChunk(x, z) == null)) {
             sender.sendMessage(new TextComponentString(TextFormatting.RED
-                    + "Il chunk " + x + "," + z + " non è caricato. Puoi rendere lazy solo chunk già caricati."));
+                    + "The chunk " + x + "," + z + " it is not loaded. You can only make already loaded chunks lazy."));
             return;
         }
         boolean changed = lazy ? LazyChunkManager.add(dimension, x, z) : LazyChunkManager.remove(dimension, x, z);
         if (lazy) {
             sender.sendMessage(new TextComponentString((changed ? TextFormatting.GREEN : TextFormatting.YELLOW)
-                    + (changed ? "Chunk " + x + "," + z + " reso lazy." : "Il chunk " + x + "," + z + " era già lazy.")));
+                    + (changed ? "Chunk " + x + "," + z + " is now lazy." : "The chunk " + x + "," + z + " it was already lazy.")));
         } else {
             sender.sendMessage(new TextComponentString((changed ? TextFormatting.GREEN : TextFormatting.YELLOW)
-                    + (changed ? "Chunk " + x + "," + z + " ripristinato al ticking normale." : "Il chunk " + x + "," + z + " non era nella lista lazy.")));
+                    + (changed ? "Chunk " + x + "," + z + " restored to normal ticking." : "The chunk " + x + "," + z + " it wasn't on the lazy list.")));
         }
     }
 
