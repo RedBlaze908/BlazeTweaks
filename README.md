@@ -24,7 +24,12 @@ The mod was created primarily to add features that I found useful in the game, b
 - **Falling Block Info:** It's possible to see more info about the falling blocks. You can find it in the options menu by pressing **`RMENU`**
 - **Falling Block Entity Ticking Toggle:** You can deactivate entity ticking only for falling blocks. (Default: **`BACKSLASH`**).
 - **Entity Ticking Toggle:** This deactivate all the entity ticking in the world. (Default: **`NONE`**, you can find it in the **`RMENU`**).
-- **Ticks Freeze**: You can freeze the ticks with `/ticks freeze`, unfreeze with `/ticks freeze`, and go forward with `/ticks step (n)`. This type of freeze, can stop even tnt and falling blocks, in this way you can visualize them better.
+- **Ticks Freeze**: You can freeze the ticks with `/instant freeze`, unfreeze with `/instat unfreeze`, and go forward with `/instant step (n)`. This type of freeze, can stop even tnt and falling blocks, in this way you can visualize them better.
+- **Lazy Chunk Simulation:** it allows you to simulate a lazy chunk with the command `/lazychunk <xChunk> <yChunk>`, you can turn it off wit `/lazychunk off <xChunk> <yChunk>`, you can see a list of the chunks that you put in lazy with `/lazychunk list` and finally you can use `/lazychunk auto on/off` for turn on or off the system that, when the chunk is outside the render distance, it becomes again a normal chunk. (only singleplayer)
+- **ITT Switch:** You can turn on ITT in singleplayer with the command `/instanttile on` for turn it on, `/instanttile off` for turn it off, `/instanttile toggle` for invert the status of the ITT, `/instanttile status` for check if is on or off. (only singleplayer)
+- **IF Switch:** Tou can turn on Instant Fall in singleplayer with the command `/instantfall on` for turn it on, `/instantfall off` for turn it off, `/instantfall toggle` for invert the status of the IF, `/instantfall status` for check if is on or off. (only singleplayer)
+- **Autosave Detector Overlay:** You can find a button in the custom menu (button for open the menu: `RMENU`) then an overlay will appear near to the hotbar (only singleplayer).
+- **Entity ID Counter:** it allows you to see the ID counter of the session with `/eid get`, you can change the value with `/eid set n`, you can increase it with `/eid increment` or decrese it with `/eid decrement`, you can also make a collision and have you entity with the same ID with `/eid collide n`.
 - **Client-Side Only:** Works entirely on the client, making it safe for multiplayer servers.
 
 ---
