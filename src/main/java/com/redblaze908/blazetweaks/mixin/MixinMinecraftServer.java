@@ -12,15 +12,7 @@ public class MixinMinecraftServer {
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void blazetweaks$controlServerTick(CallbackInfo ci) {
-
-        System.out.println(
-                "[BlazeTweaks] SERVER TICK - frozen="
-                        + TickControlHandler.isFrozen()
-                        + " steps="
-                        + TickControlHandler.getRemainingStepTicks());
-
         if (!TickControlHandler.shouldRunWorldTick()) {
-            System.out.println("[BlazeTweaks] >>> SERVER TICK CANCELLED <<<");
             ci.cancel();
         }
     }

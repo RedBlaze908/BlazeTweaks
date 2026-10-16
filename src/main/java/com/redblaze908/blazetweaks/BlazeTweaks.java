@@ -1,16 +1,23 @@
+
 package com.redblaze908.blazetweaks;
 
 import com.redblaze908.blazetweaks.client.DungeonBoundingBoxRenderer;
 import com.redblaze908.blazetweaks.client.EnchantmentGuiHandler;
 import com.redblaze908.blazetweaks.client.RejoinHandler;
 import com.redblaze908.blazetweaks.commands.CommandBackup;
+import com.redblaze908.blazetweaks.commands.CommandEID;
+import com.redblaze908.blazetweaks.commands.CommandInstantFall;
+import com.redblaze908.blazetweaks.commands.CommandInstantTileTick;
 import com.redblaze908.blazetweaks.commands.CommandLightningFinder;
+import com.redblaze908.blazetweaks.commands.CommandLazyChunk;
 import com.redblaze908.blazetweaks.commands.CommandRNG;
 import com.redblaze908.blazetweaks.commands.CommandRNGWeather;
 import com.redblaze908.blazetweaks.commands.CommandTick;
 import com.redblaze908.blazetweaks.events.ChunkGeneratorTracker;
 import com.redblaze908.blazetweaks.events.EntityTickingHandler;
+import com.redblaze908.blazetweaks.events.LazyChunkManager;
 import com.redblaze908.blazetweaks.gui.FallingBlockHudOverlay;
+import com.redblaze908.blazetweaks.gui.AutosaveCounterHudOverlay;
 import com.redblaze908.blazetweaks.modules.containers.ShulkerTooltipHandler;
 
 import net.minecraftforge.client.ClientCommandHandler;
@@ -21,20 +28,23 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.ModMetadata;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 import java.util.Collections;
 
 @Mod(modid = BlazeTweaks.MODID, name = BlazeTweaks.NAME, version = BlazeTweaks.VERSION)
 public class BlazeTweaks {
+
     public static final String MODID = "blazetweaks";
     public static final String NAME = "BlazeTweaks";
     public static final String VERSION = "1.1.1";
 
-    // flags
+    // Flags
     public static boolean isDungeonOverlayEnabled = false;
     public static boolean isEntityTickingDisabled = false;
     public static boolean isFallingBlockTickingDisabled = false;
     public static boolean isFallingBlockDebugEnabled = false;
+    public static boolean isAutosaveCounterEnabled = false;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
@@ -51,10 +61,10 @@ public class BlazeTweaks {
     @EventHandler
     public void init(FMLInitializationEvent event) {
 
-        // RNG
+        // RNG commands
         ClientCommandHandler.instance.registerCommand(new CommandRNG());
         ClientCommandHandler.instance.registerCommand(new CommandRNGWeather());
-        ClientCommandHandler.instance.registerCommand(new CommandLightningFinder()); // useless
+        ClientCommandHandler.instance.registerCommand(new CommandLightningFinder());
         ClientCommandHandler.instance.registerCommand(new CommandTick());
 
         // Backup System
@@ -63,13 +73,13 @@ public class BlazeTweaks {
         // PistonOrder
         MinecraftForge.EVENT_BUS.register(new PistonInspectHandler());
 
-        // ShulkerToolTip
+        // ShulkerTooltip
         MinecraftForge.EVENT_BUS.register(new ShulkerTooltipHandler());
 
         // Rejoin
         MinecraftForge.EVENT_BUS.register(new RejoinHandler());
 
-        // Enchating RNG
+        // Enchantment RNG
         MinecraftForge.EVENT_BUS.register(new EnchantmentGuiHandler());
 
         // Spawner Overlay
@@ -80,12 +90,24 @@ public class BlazeTweaks {
 
         // Entity Ticking
         MinecraftForge.EVENT_BUS.register(new EntityTickingHandler());
+        MinecraftForge.EVENT_BUS.register(new LazyChunkManager());
         MinecraftForge.EVENT_BUS.register(new FallingBlockHudOverlay());
+        MinecraftForge.EVENT_BUS.register(new AutosaveCounterHudOverlay());
 
+        // Client-side handlers
         if (FMLCommonHandler.instance().getSide().isClient()) {
             KeyInputHandler.init();
             MinecraftForge.EVENT_BUS.register(new KeyInputHandler());
             MinecraftForge.EVENT_BUS.register(new PistonOverlayRenderer());
         }
+    }
+
+    // Register server commands
+    @EventHandler
+    public void onServerStarting(FMLServerStartingEvent event) {
+        event.registerServerCommand(new CommandEID());
+        event.registerServerCommand(new CommandInstantFall());
+        event.registerServerCommand(new CommandInstantTileTick());
+        event.registerServerCommand(new CommandLazyChunk());
     }
 }

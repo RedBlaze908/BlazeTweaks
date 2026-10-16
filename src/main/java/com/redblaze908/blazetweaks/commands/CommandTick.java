@@ -12,17 +12,17 @@ public class CommandTick extends CommandBase {
 
     @Override
     public String getName() {
-        return "ticks";
+        return "instant";
     }
 
     @Override
     public String getUsage(ICommandSender sender) {
-        return "/ticks <freeze|unfreeze|step <N>>";
+        return "/instant <freeze|unfreeze|step <N>>";
     }
 
     @Override
     public int getRequiredPermissionLevel() {
-        return 0; // Utilizzabile da qualsiasi giocatore client
+        return 0;
     }
 
     @Override

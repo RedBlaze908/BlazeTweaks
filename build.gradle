@@ -73,6 +73,12 @@ minecraft {
 dependencies {
     minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2859'
 
+    runtimeOnly("org.spongepowered:mixin:0.8.3") {
+        exclude module: "guava"
+        exclude module: "commons-io"
+        exclude module: "gson"
+    }
+
     compileOnly("org.spongepowered:mixin:0.8.3") {
         exclude module: "guava"
         exclude module: "commons-io"
