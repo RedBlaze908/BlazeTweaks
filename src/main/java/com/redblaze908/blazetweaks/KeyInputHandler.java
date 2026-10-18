@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.gameevent.InputEvent;
 import org.lwjgl.input.Keyboard;
 
 import com.redblaze908.blazetweaks.gui.BlazeGuiScreen;
+import com.redblaze908.blazetweaks.symmetry.BuildSymmetryManager;
 
 public class KeyInputHandler {
 
@@ -34,6 +35,11 @@ public class KeyInputHandler {
             Keyboard.KEY_BACKSLASH,
             "BlazeTweaks");
 
+    public static final KeyBinding symmetryCornerKey = new KeyBinding(
+            "Set Symmetry Selection Corner",
+            Keyboard.KEY_B,
+            "BlazeTweaks");
+
     private static boolean enabled = true;
 
     public static void init() {
@@ -41,6 +47,7 @@ public class KeyInputHandler {
         ClientRegistry.registerKeyBinding(openGuiKey);
         ClientRegistry.registerKeyBinding(toggleEntityTicking);
         ClientRegistry.registerKeyBinding(toggleFallingBlockKey);
+        ClientRegistry.registerKeyBinding(symmetryCornerKey);
     }
 
     public static boolean isEnabled() {
@@ -49,6 +56,23 @@ public class KeyInputHandler {
 
     @SubscribeEvent
     public void onKeyInput(InputEvent.KeyInputEvent event) {
+        if (symmetryCornerKey.isPressed()) {
+            Minecraft mc = Minecraft.getMinecraft();
+            if (mc.currentScreen == null && mc.player != null && mc.world != null) {
+                if (mc.objectMouseOver != null
+                        && mc.objectMouseOver.typeOfHit == net.minecraft.util.math.RayTraceResult.Type.BLOCK
+                        && mc.objectMouseOver.getBlockPos() != null) {
+                    boolean complete = BuildSymmetryManager.selectCorner(mc.world, mc.objectMouseOver.getBlockPos());
+                    String message = complete
+                            ? "[BlazeTweaks] Symmetry area selected. Axis: " + BuildSymmetryManager.getAxis().name()
+                            : "[BlazeTweaks] First corner set. Aim at the opposite corner and press B again.";
+                    mc.player.sendMessage(new TextComponentString(TextFormatting.GOLD + message));
+                } else {
+                    mc.player.sendMessage(new TextComponentString(TextFormatting.RED
+                            + "[BlazeTweaks] Aim at a block to select a symmetry corner."));
+                }
+            }
+        }
         // piston overlay
         if (TOGGLE_KEY.isPressed()) {
             enabled = !enabled;

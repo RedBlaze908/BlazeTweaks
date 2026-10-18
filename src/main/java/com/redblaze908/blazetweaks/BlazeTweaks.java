@@ -2,6 +2,7 @@
 package com.redblaze908.blazetweaks;
 
 import com.redblaze908.blazetweaks.client.DungeonBoundingBoxRenderer;
+import com.redblaze908.blazetweaks.client.BuildSymmetryRenderer;
 import com.redblaze908.blazetweaks.client.EnchantmentGuiHandler;
 import com.redblaze908.blazetweaks.client.RejoinHandler;
 import com.redblaze908.blazetweaks.commands.CommandBackup;
@@ -37,7 +38,7 @@ public class BlazeTweaks {
 
     public static final String MODID = "blazetweaks";
     public static final String NAME = "BlazeTweaks";
-    public static final String VERSION = "1.1.2";
+    public static final String VERSION = "1.1.3";
 
     // Flags
     public static boolean isDungeonOverlayEnabled = false;
@@ -45,6 +46,9 @@ public class BlazeTweaks {
     public static boolean isFallingBlockTickingDisabled = false;
     public static boolean isFallingBlockDebugEnabled = false;
     public static boolean isAutosaveCounterEnabled = false;
+    public static boolean isAirPlacementEnabled = false;
+    public static boolean isBlockReplaceEnabled = false;
+    public static boolean isBuildSymmetryEnabled = false;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
@@ -99,6 +103,7 @@ public class BlazeTweaks {
             KeyInputHandler.init();
             MinecraftForge.EVENT_BUS.register(new KeyInputHandler());
             MinecraftForge.EVENT_BUS.register(new PistonOverlayRenderer());
+            MinecraftForge.EVENT_BUS.register(new BuildSymmetryRenderer());
         }
     }
 

@@ -17,6 +17,24 @@ import java.util.List;
 
 public class FallingBlockHudOverlay extends Gui {
 
+    private int getAuthoritativeFallTime(Minecraft mc, EntityFallingBlock clientBlock) {
+        if (mc.isSingleplayer() && mc.getIntegratedServer() != null && mc.world != null) {
+            net.minecraft.world.WorldServer serverWorld = mc.getIntegratedServer()
+                    .getWorld(mc.world.provider.getDimension());
+
+            if (serverWorld != null) {
+                net.minecraft.entity.Entity serverEntity = serverWorld.getEntityFromUuid(clientBlock.getUniqueID());
+
+                if (serverEntity instanceof EntityFallingBlock) {
+                    return ((EntityFallingBlock) serverEntity).fallTime;
+                }
+            }
+        }
+
+        // Multiplayer / unavailable server counterpart: use the client entity.
+        return clientBlock.fallTime;
+    }
+
     @SubscribeEvent
     public void onRenderOverlay(RenderGameOverlayEvent.Post event) {
         if (event.getType() != RenderGameOverlayEvent.ElementType.TEXT)
@@ -64,8 +82,10 @@ public class FallingBlockHudOverlay extends Gui {
                     TextFormatting.WHITE,
                     block.posX, block.posY, block.posZ);
 
+            int displayedFallTime = getAuthoritativeFallTime(mc, block);
+
             String line2 = String.format("   %sFallTime: %s%dt | %sFrozen: %s%b | %sSpeed: %s%.3f b/t",
-                    TextFormatting.GRAY, TextFormatting.AQUA, block.fallTime,
+                    TextFormatting.GRAY, TextFormatting.AQUA, displayedFallTime,
                     TextFormatting.GRAY, block.updateBlocked ? TextFormatting.GREEN : TextFormatting.RED,
                     block.updateBlocked,
                     TextFormatting.GRAY, TextFormatting.LIGHT_PURPLE, speed);

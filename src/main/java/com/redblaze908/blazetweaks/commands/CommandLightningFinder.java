@@ -9,6 +9,10 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.math.BlockPos;
+import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.Collections;
 import net.minecraft.world.WorldServer;
 
 import java.util.List;
@@ -115,4 +119,20 @@ public class CommandLightningFinder extends CommandBase {
                             + tag));
         }
     }
+
+    @Override
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args,
+            @Nullable BlockPos targetPos) {
+        if (args.length == 1) {
+            return getListOfStringsMatchingLastWord(args, Arrays.asList("1", "5", "10", "20", "50", "100"));
+        }
+        if (args.length == 2) {
+            return getListOfStringsMatchingLastWord(args, Arrays.asList("4", "8", "12", "16", "24"));
+        }
+        if (args.length == 3 || args.length == 4) {
+            return getListOfStringsMatchingLastWord(args, Arrays.asList("0", "-1", "1"));
+        }
+        return Collections.emptyList();
+    }
+
 }

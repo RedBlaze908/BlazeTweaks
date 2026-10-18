@@ -8,6 +8,11 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.math.BlockPos;
+import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import java.util.Locale;
 
@@ -128,4 +133,18 @@ public class CommandEID extends CommandBase {
                 sender.sendMessage(new TextComponentString(getUsage(sender)));
         }
     }
+
+    @Override
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args,
+            @Nullable BlockPos targetPos) {
+        if (args.length == 1) {
+            return getListOfStringsMatchingLastWord(args,
+                    Arrays.asList("get", "set", "increment", "decrement", "entity", "collide", "fix"));
+        }
+        if (args.length == 2 && (args[0].equalsIgnoreCase("entity") || args[0].equalsIgnoreCase("collide"))) {
+            return getListOfStringsMatchingLastWord(args, Arrays.asList(server.getOnlinePlayerNames()));
+        }
+        return Collections.emptyList();
+    }
+
 }

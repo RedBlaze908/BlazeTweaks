@@ -6,6 +6,10 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.BlockPos;
+import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.List;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.WorldServer;
@@ -77,4 +81,14 @@ public class CommandInstantTileTick extends CommandBase {
         sender.sendMessage(new TextComponentString(TextFormatting.YELLOW + "Instant Tile Tick globale: "
                 + (ENABLED ? TextFormatting.GREEN + "ON" : TextFormatting.RED + "OFF")));
     }
+
+    @Override
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args,
+            @Nullable BlockPos targetPos) {
+        if (args.length == 1) {
+            return getListOfStringsMatchingLastWord(args, Arrays.asList("on", "off", "toggle", "status"));
+        }
+        return java.util.Collections.emptyList();
+    }
+
 }

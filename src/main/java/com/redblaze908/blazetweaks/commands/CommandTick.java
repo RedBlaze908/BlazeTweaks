@@ -57,4 +57,17 @@ public class CommandTick extends CommandBase {
             sender.sendMessage(new TextComponentString(TextFormatting.RED + getUsage(sender)));
         }
     }
+
+    @Override
+    public java.util.List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args,
+            @javax.annotation.Nullable net.minecraft.util.math.BlockPos targetPos) {
+        if (args.length == 1) {
+            return getListOfStringsMatchingLastWord(args, java.util.Arrays.asList("freeze", "unfreeze", "step"));
+        }
+        if (args.length == 2 && args[0].equalsIgnoreCase("step")) {
+            return getListOfStringsMatchingLastWord(args, java.util.Arrays.asList("1", "5", "10", "20", "100"));
+        }
+        return java.util.Collections.emptyList();
+    }
+
 }

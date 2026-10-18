@@ -14,9 +14,18 @@ import java.util.zip.ZipOutputStream;
 public class BackupManager {
 
     public static void createBackup() {
+        createBackup(null);
+    }
+
+    /**
+     * Creates a world backup. If customName is blank, the default world/timestamp name is used.
+     * If a custom name already exists, a numeric suffix is added rather than overwriting it.
+     * @return the target ZIP file, or null if no integrated single-player server is running.
+     */
+    public static File createBackup(String customName) {
         Minecraft mc = Minecraft.getMinecraft();
         if (!mc.isIntegratedServerRunning() || mc.getIntegratedServer() == null)
-            return;
+            return null;
 
         try {
             mc.getIntegratedServer().saveAllWorlds(false);
@@ -31,16 +40,38 @@ public class BackupManager {
             backupDir.mkdirs();
 
         String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
-        File zipFile = new File(backupDir, folderName + "_" + timeStamp + ".zip");
+        String baseName = sanitizeBackupName(customName);
+        if (baseName == null || baseName.trim().isEmpty()) {
+            baseName = folderName + "_" + timeStamp;
+        }
+        if (baseName.toLowerCase(java.util.Locale.ROOT).endsWith(".zip")) {
+            baseName = baseName.substring(0, baseName.length() - 4);
+        }
+
+        File zipFile = new File(backupDir, baseName + ".zip");
+        int suffix = 2;
+        while (zipFile.exists()) {
+            zipFile = new File(backupDir, baseName + "_" + suffix + ".zip");
+            suffix++;
+        }
+        final File targetZip = zipFile;
 
         CompletableFuture.runAsync(() -> {
-            try (FileOutputStream fos = new FileOutputStream(zipFile);
+            try (FileOutputStream fos = new FileOutputStream(targetZip);
                     ZipOutputStream zos = new ZipOutputStream(fos)) {
                 zipDirectory(worldFolder, worldFolder.getName(), zos);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
+        return targetZip;
+    }
+
+    private static String sanitizeBackupName(String name) {
+        if (name == null) return null;
+        String cleaned = name.trim().replaceAll("[<>:\"/\\|?*]", "_");
+        cleaned = cleaned.replaceAll("[. ]+$", "");
+        return cleaned;
     }
 
     public static void restoreAndReload(File zipBackup) {

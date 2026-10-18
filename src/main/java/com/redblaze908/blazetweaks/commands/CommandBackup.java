@@ -42,8 +42,23 @@ public class CommandBackup extends CommandBase {
         String action = args[0].toLowerCase();
 
         if (action.equals("save")) {
-            BackupManager.createBackup();
-            sender.sendMessage(new TextComponentString(TextFormatting.GREEN + "Backup started in the background!"));
+            String customName = null;
+            if (args.length > 1) {
+                StringBuilder nameBuilder = new StringBuilder();
+                for (int i = 1; i < args.length; i++) {
+                    if (nameBuilder.length() > 0) nameBuilder.append('_');
+                    nameBuilder.append(args[i]);
+                }
+                customName = nameBuilder.toString();
+            }
+            File createdFile = BackupManager.createBackup(customName);
+            if (createdFile == null) {
+                sender.sendMessage(new TextComponentString(TextFormatting.RED +
+                        "Could not start backup. Make sure you are in a single-player world."));
+            } else {
+                sender.sendMessage(new TextComponentString(TextFormatting.GREEN +
+                        "Backup started in the background: " + createdFile.getName()));
+            }
         } else if (action.equals("list")) {
             File backupDir = new File(Minecraft.getMinecraft().mcDataDir, "backups");
             File[] files = backupDir.listFiles((dir, name) -> name.endsWith(".zip"));

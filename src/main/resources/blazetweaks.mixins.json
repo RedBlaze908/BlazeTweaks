@@ -13,10 +13,13 @@
     "WorldInstantTileTickAccessor",
     "MixinWorldServerInstantTileTick",
     "MixinMinecraftServerAutosaveCounter",
+    "MixinNetHandlerPlayServerBuildSymmetry",
     "MixinWorldLazyChunkClient",
     "MixinEntityLazyChunkPositionSync"
   ],
   "client": [
+    "MixinMinecraftAirPlacement",
+    "MixinMinecraftBlockReplace",
     "MixinEntityTNTPrimed",
     "MixinEntityFallingBlock"
   ],
